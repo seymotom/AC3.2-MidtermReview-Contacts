@@ -16,6 +16,9 @@ class Contact {
     let role: String
     let email: String
     let avatarURL: String
+    var fullName: String {
+        return self.firstName + " " + self.lastName
+    }
     
     init(id: Int, firstName: String, lastName: String, company: String, role: String, email: String, avatarURL: String) {
         self.id = id

@@ -19,18 +19,18 @@
                                 <rect key="frame" x="0.0" y="92" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c7n-Tc-jnR" id="Dtp-wj-Y29">
-                                    <frame key="frameInset" width="375" height="43"/>
+                                    <frame key="frameInset" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vO8-pT-HIZ">
-                                            <frame key="frameInset" minX="15" minY="4" width="34" height="21"/>
+                                            <frame key="frameInset" minX="15" minY="5" width="33.5" height="20.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3eW-1E-ad6">
-                                            <frame key="frameInset" minX="15" minY="25" width="44" height="15"/>
+                                            <frame key="frameInset" minX="15" minY="25.5" width="44" height="14.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <nil key="textColor"/>
@@ -38,6 +38,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="N47-or-WCI" kind="show" identifier="editContactSegue" id="ORa-81-eUY"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -46,11 +49,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="GNE-lC-pCq">
-                        <barButtonItem key="leftBarButtonItem" title="reload" id="1l1-0e-Qlt">
-                            <connections>
-                                <action selector="reloadTapped:" destination="tcH-a3-wl3" id="iZw-Qt-6gW"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="C0P-i2-UJa">
                             <connections>
                                 <segue destination="N47-or-WCI" kind="show" identifier="addContactSegue" id="MlI-jy-AHo"/>
@@ -62,10 +60,10 @@
             </objects>
             <point key="canvasLocation" x="423" y="-38"/>
         </scene>
-        <!--Title-->
+        <!--Contacts Detail View Controller-->
         <scene sceneID="OrX-Hu-kjE">
             <objects>
-                <viewController id="N47-or-WCI" customClass="AddContactViewController" customModule="AC3_2_MidtermReview_Contacts" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Contacts Detail View Controller" id="N47-or-WCI" customClass="ContactDetailViewController" customModule="AC3_2_MidtermReview_Contacts" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="x8M-Bz-KXd"/>
                         <viewControllerLayoutGuide type="bottom" id="Cnl-fG-MRs"/>
@@ -130,6 +128,17 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="v85-9V-86o"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="naN-IL-82D">
+                                <frame key="frameInset" minX="146" minY="274" width="83" height="43"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                                <state key="normal" title="Delete">
+                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="didPressDelete:" destination="N47-or-WCI" eventType="touchUpInside" id="d0a-f1-wS0"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -149,6 +158,7 @@
                     <connections>
                         <outlet property="activityIndicator" destination="v85-9V-86o" id="ixK-TH-m1v"/>
                         <outlet property="avatarImageView" destination="4fW-IH-u9d" id="UKN-a9-Zc8"/>
+                        <outlet property="deleteButton" destination="naN-IL-82D" id="ADp-XV-rAF"/>
                         <outlet property="doneButton" destination="dQB-5g-VgH" id="ZYT-pE-ppH"/>
                         <outlet property="emailTextField" destination="4kr-ie-g2T" id="obb-P2-6yz"/>
                         <outlet property="firstNameTextField" destination="ZVp-ZD-6F0" id="53z-tG-H1P"/>
@@ -176,4 +186,7 @@
             <point key="canvasLocation" x="-530" y="-38"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="ORa-81-eUY"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -14,7 +14,7 @@
 		DE23461E1DF724660082CD7E /* ContactsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE23461D1DF724660082CD7E /* ContactsTableViewController.swift */; };
 		DE2346241DF724C10082CD7E /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2346231DF724C10082CD7E /* Contact.swift */; };
 		DE65C38C1DF727A2006D448A /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE65C38B1DF727A2006D448A /* APIManager.swift */; };
-		DE65C38F1DF743E1006D448A /* AddContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE65C38E1DF743E1006D448A /* AddContactViewController.swift */; };
+		DE65C38F1DF743E1006D448A /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE65C38E1DF743E1006D448A /* ContactDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +27,7 @@
 		DE23461D1DF724660082CD7E /* ContactsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsTableViewController.swift; sourceTree = "<group>"; };
 		DE2346231DF724C10082CD7E /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		DE65C38B1DF727A2006D448A /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
-		DE65C38E1DF743E1006D448A /* AddContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddContactViewController.swift; sourceTree = "<group>"; };
+		DE65C38E1DF743E1006D448A /* ContactDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,7 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				DE23461D1DF724660082CD7E /* ContactsTableViewController.swift */,
-				DE65C38E1DF743E1006D448A /* AddContactViewController.swift */,
+				DE65C38E1DF743E1006D448A /* ContactDetailViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -185,7 +185,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE65C38F1DF743E1006D448A /* AddContactViewController.swift in Sources */,
+				DE65C38F1DF743E1006D448A /* ContactDetailViewController.swift in Sources */,
 				DE65C38C1DF727A2006D448A /* APIManager.swift in Sources */,
 				DE2346241DF724C10082CD7E /* Contact.swift in Sources */,
 				DE23461E1DF724660082CD7E /* ContactsTableViewController.swift in Sources */,

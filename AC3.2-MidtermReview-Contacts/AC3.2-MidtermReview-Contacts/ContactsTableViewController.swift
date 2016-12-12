@@ -28,6 +28,7 @@ class ContactsTableViewController: UITableViewController {
     var isFirstTimeLoad = true
     
     func loadTableView() {
+        navigationItem.title = "Contacts"
         APIManager.shared.getContacts(endpoint: contactsEndpoint) { (allTheContacts: [Contact]?) in
             if let allTheContacts = allTheContacts {
                 DispatchQueue.main.async {
@@ -80,14 +81,21 @@ class ContactsTableViewController: UITableViewController {
 // MARK: Navigation
     
     
-    @IBAction func reloadTapped(_ sender: UIBarButtonItem) {
-        self.loadTableView()
-    }
-    
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "addContactSegue" {
-            print(" SEGUE! ")
+            if let destinationVC = segue.destination as? ContactDetailViewController {
+                destinationVC.viewControllerState = .addContact
+            }
+            print(" ADD SEGUE! ")
+        }
+        if segue.identifier == "editContactSegue" {
+            if let destinationVC = segue.destination as? ContactDetailViewController,
+                let cell = sender as? UITableViewCell,
+                let indexPath = tableView.indexPath(for: cell) {
+                destinationVC.viewControllerState = .editContact
+                destinationVC.contact = contacts[indexPath.row]
+            }
+            print(" EDIT SEGUE! ")
         }
     }
     
