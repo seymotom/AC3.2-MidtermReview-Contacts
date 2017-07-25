@@ -29,16 +29,15 @@ class ContactsTableViewController: UITableViewController {
     
     func loadTableView() {
         navigationItem.title = "Contacts"
-        APIManager.shared.getContacts(endpoint: contactsEndpoint) { (allTheContacts: [Contact]?) in
-            if let allTheContacts = allTheContacts {
-                DispatchQueue.main.async {
-                    self.contacts = allTheContacts
-                    self.tableView.reloadData()
-                    if !self.isFirstTimeLoad {
-                        self.scrollToLast()
-                    }
-                    self.isFirstTimeLoad = false
+        
+        APIManager.shared.makeRequest(httpMethod: .get, endpoint: contactsEndpoint) { (response, data) in
+            DispatchQueue.main.async {
+                self.contacts = Contact.buildArrayOfContacts(from: data)
+                self.tableView.reloadData()
+                if !self.isFirstTimeLoad {
+                    self.scrollToLast()
                 }
+                self.isFirstTimeLoad = false
             }
         }
     }
@@ -58,21 +57,17 @@ class ContactsTableViewController: UITableViewController {
         return contacts.count
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath)
         let thisContact = contacts[indexPath.row]
-        cell.textLabel?.text = thisContact.firstName + " " + thisContact.lastName
+        cell.textLabel?.text = thisContact.fullName
         cell.detailTextLabel?.text = thisContact.email
-        
-        APIManager.shared.getData(endpoint: thisContact.avatarURL) { (data) in
-            if let imageData = data {
-                DispatchQueue.main.async {
-                    cell.imageView?.image = UIImage(data: imageData)
-                    cell.imageView?.layer.cornerRadius = 22
-                    cell.imageView?.layer.masksToBounds = true
-                    cell.setNeedsLayout()
-                }
+        APIManager.shared.makeRequest(httpMethod: .get, endpoint: thisContact.avatarURL) { (_, data) in
+            DispatchQueue.main.async {
+                cell.imageView?.image = UIImage(data: data)
+                cell.imageView?.layer.cornerRadius = 22
+                cell.imageView?.layer.masksToBounds = true
+                cell.setNeedsLayout()
             }
         }
         return cell
@@ -80,13 +75,11 @@ class ContactsTableViewController: UITableViewController {
     
 // MARK: Navigation
     
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "addContactSegue" {
             if let destinationVC = segue.destination as? ContactDetailViewController {
                 destinationVC.viewControllerState = .addContact
             }
-            print(" ADD SEGUE! ")
         }
         if segue.identifier == "editContactSegue" {
             if let destinationVC = segue.destination as? ContactDetailViewController,
@@ -95,9 +88,6 @@ class ContactsTableViewController: UITableViewController {
                 destinationVC.viewControllerState = .editContact
                 destinationVC.contact = contacts[indexPath.row]
             }
-            print(" EDIT SEGUE! ")
         }
     }
-    
-    
 }

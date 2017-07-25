@@ -48,7 +48,7 @@ class ContactDetailViewController: UIViewController, UITextFieldDelegate {
     
     func loadEditContactView() {
         if let thisContact = contact {
-            navigationItem.title = thisContact.firstName + " " + thisContact.lastName
+            navigationItem.title = thisContact.fullName
         }
         deleteButton.isHidden = false
         displayCurrentContact()
@@ -59,14 +59,12 @@ class ContactDetailViewController: UIViewController, UITextFieldDelegate {
             firstNameTextField.text = thisContact.firstName
             lastNameTextField.text = thisContact.lastName
             emailTextField.text = thisContact.email
-            APIManager.shared.getData(endpoint: thisContact.avatarURL) { (data) in
-                if let unwrappedData = data {
-                    DispatchQueue.main.async {
-                        self.avatarImageView.image = UIImage(data: unwrappedData)
-                        self.avatarImageView.layer.cornerRadius = 85
-                        self.avatarImageView.layer.masksToBounds = true
-                        self.reloadInputViews()
-                    }
+            APIManager.shared.makeRequest(httpMethod: .get, endpoint: thisContact.avatarURL) { (_, data) in
+                DispatchQueue.main.async {
+                    self.avatarImageView.image = UIImage(data: data)
+                    self.avatarImageView.layer.cornerRadius = 85
+                    self.avatarImageView.layer.masksToBounds = true
+                    self.reloadInputViews()
                 }
             }
         }
@@ -81,19 +79,17 @@ class ContactDetailViewController: UIViewController, UITextFieldDelegate {
         }
         switch viewControllerState {
         case .addContact:
-            let addedContactDict: [String: String] = [
+            let addedContactDict: [String: Any] = [
                 "name" : firstNameString + " " + lastNameString,
                 "email" : emailString,
                 "company" : "Unemployed",
                 "role" : "Chief Couch Officer",
                 "avatarurl" : "https://randomuser.me/api/portraits/lego/\(arc4random_uniform(UInt32(9))).jpg"
             ]
-            APIManager.shared.postData(endpoint: self.contactsEndpoint, postDict: addedContactDict) { (response) in
+            APIManager.shared.makeRequest(httpMethod: .post, endpoint: self.contactsEndpoint, bodyDict: addedContactDict) { (response, _) in
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                     if let response = response as? HTTPURLResponse {
-                        
-                        // switch on the responce code and alert to a failure
                         switch response.statusCode {
                         case 200...299:
                             self.showAlertWith(title: "Success", message: "Your contact was added successfully")
@@ -105,9 +101,9 @@ class ContactDetailViewController: UIViewController, UITextFieldDelegate {
                     }
                 }
             }
+            
         case .editContact:
             print("******EDIT******")
-            // make a PUT request. Create a button for delete and use it to make a delete request
             guard let thisContact = contact else { return }
             let editedContactDict: [String: Any] = [
                 "name" : firstNameString + " " + lastNameString,
@@ -116,7 +112,7 @@ class ContactDetailViewController: UIViewController, UITextFieldDelegate {
                 "role" : thisContact.role,
                 "avatarurl" : thisContact.avatarURL
             ]
-            APIManager.shared.putData(endpoint: self.contactsEndpoint + String(thisContact.id), putDict: editedContactDict) { (response) in
+            APIManager.shared.makeRequest(httpMethod: .patch, endpoint: self.contactsEndpoint + String(thisContact.id), bodyDict: editedContactDict) { (response, _) in
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                     if let response = response as? HTTPURLResponse {
@@ -137,7 +133,7 @@ class ContactDetailViewController: UIViewController, UITextFieldDelegate {
     func makeDeleteRequest() {
         activityIndicator.startAnimating()
         if let thisContact = contact {
-            APIManager.shared.deleteData(endpoint: self.contactsEndpoint + String(thisContact.id)) { (response) in
+            APIManager.shared.makeRequest(httpMethod: .delete, endpoint: self.contactsEndpoint + String(thisContact.id)) { (response, _) in
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                     if let response = response as? HTTPURLResponse {
@@ -164,9 +160,7 @@ class ContactDetailViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func didPressDelete(_ sender: UIButton) {
-        //make a delete request.
         deleteButton.isEnabled = false
-        makeDeleteRequest()
         guard let thisContact = contact else { return }
         showDeleteAlert(title: "Delete?", message: "Are you sure you want to delete \(thisContact.fullName)?")
     }
@@ -203,7 +197,6 @@ class ContactDetailViewController: UIViewController, UITextFieldDelegate {
         alert.addAction(okayAction)
         
         present(alert, animated: true, completion: nil)
-        
     }
 
 }

@@ -16,11 +16,9 @@ class Contact {
     let role: String
     let email: String
     let avatarURL: String
-    var fullName: String {
-        return self.firstName + " " + self.lastName
-    }
+    let fullName: String
     
-    init(id: Int, firstName: String, lastName: String, company: String, role: String, email: String, avatarURL: String) {
+    init(id: Int, firstName: String, lastName: String, company: String, role: String, email: String, avatarURL: String, fullName: String) {
         self.id = id
         self.firstName = firstName
         self.lastName = lastName
@@ -28,6 +26,7 @@ class Contact {
         self.role = role
         self.email = email
         self.avatarURL = avatarURL
+        self.fullName = fullName
     }
     
     convenience init?(from dict: [String: Any]) {
@@ -40,12 +39,33 @@ class Contact {
             
             let firstName = fullName.components(separatedBy: " ").count > 1 ? fullName.components(separatedBy: " ")[0] : "n/a"
             let lastName = fullName.components(separatedBy: " ").count > 1 ? fullName.components(separatedBy: " ").last! : "n/a"
-            self.init(id: id, firstName: firstName, lastName: lastName, company: company, role: role, email: email, avatarURL: avatarURL)
+            self.init(id: id, firstName: firstName, lastName: lastName, company: company, role: role, email: email, avatarURL: avatarURL, fullName: fullName)
             
         } else {
             print("Error occured while parsing data.")
             return nil
         }
     }
+    
+    static func buildArrayOfContacts(from data: Data) -> [Contact] {
+        var allTheContacts: [Contact] = []
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]]
+            if let contactsArr = json {
+                for contact in contactsArr {
+                    if let thisContact = Contact(from: contact) {
+                        allTheContacts.append(thisContact)
+                    }
+                }
+                return allTheContacts
+            }
+        }
+        catch {
+            print("problem serializing json: \(error)")
+        }
+        return allTheContacts
+    }
+
+    
     
 }
